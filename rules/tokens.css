@@ -1,0 +1,66 @@
+/* ============================================================================
+   instyle.group Flat Design System — design tokens
+   ----------------------------------------------------------------------------
+   Drop this into your project's stylesheet entry (e.g. src/styles/tokens.css)
+   and reference the variables below. Do not hardcode hex colors elsewhere.
+
+   The flat system separates regions by background-color steps, NOT by
+   borders or shadows. Reach for surface tones first.
+   ============================================================================ */
+
+:root {
+  /* ── Surfaces (light → progressively darker warm neutral) ── */
+  --color-bg:          #FFFFFF;
+  --color-surface:     #F3F1EE;
+  --color-surface-2:   #E6E2D7;
+  --color-surface-3:   #E1DCD0;
+
+  /* Borders (use sparingly — only when contrast alone fails) */
+  --color-border:      #C4C1B0;
+  --color-border-dark: #82837A;
+
+  /* ── Text ─────────────────────────────────────────── */
+  --color-text:         #35362D;
+  --color-text-muted:   #82837A;
+  --color-text-light:   #C4C1B0;
+  --color-text-inverse: #F3F1EE;   /* on dark backgrounds */
+
+  /* ── Accents ──────────────────────────────────────── */
+  --color-accent:       #C4C1B0;
+  --color-accent-light: #82837A;
+  --color-accent-dark:  #E6E2D7;
+
+  /* ── Status ───────────────────────────────────────── */
+  --color-success:     #16A34A;
+  --color-warning:     #D97706;
+  --color-error:       #C6292C;
+  --color-info:        #2563EB;
+
+  /* Highlight — inline text marker only.
+     Never use as a fill for CTAs, panels, badges, or icon backgrounds. */
+  --color-highlight:   #E2DD2A;
+
+  /* ── Radii (paired with superellipse — slightly larger than usual) ── */
+  --r-sm:   8px;
+  --r:      12px;
+  --r-lg:   20px;
+  --r-xl:   28px;
+  --r-pill: 999px;
+
+  /* ── Corner shape (CSS Borders Level 4 — superellipse / squircle) ── */
+  --corner-shape:      superellipse(2.5);  /* default */
+  --corner-shape-soft: superellipse(2);    /* rounder */
+  --corner-shape-hard: superellipse(3.5);  /* squarer */
+
+  /* ── Typography ───────────────────────────────────── */
+  --font-sans:  'Lato', 'Noto Sans JP', sans-serif;
+  --font-serif: 'Shippori Mincho', serif;  /* opt-in only */
+
+  /* ── Motion ───────────────────────────────────────── */
+  --transition-fast:   150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Apply continuous-curvature corner shape to all elements.
+   Browsers without `corner-shape` fall back to standard border-radius. */
+* { corner-shape: var(--corner-shape); }

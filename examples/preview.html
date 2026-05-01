@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>instyle.group Design System — Preview</title>
+  <link rel="icon" href="ig_favicon_2026.png">
+  <meta property="og:title" content="instyle.group Design System">
+  <meta property="og:description" content="カラー / タイポグラフィ / コンポーネント / レイアウト — Visual Preview">
+  <meta property="og:image" content="ig_ogp_2026-100.jpg">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="ig_ogp_2026-100.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700&family=Noto+Sans+JP:wght@400;500;700&family=Shippori+Mincho:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-bg:          #FFFFFF;
+      --color-surface:     #F3F1EE;
+      --color-surface-2:   #E6E2D7;
+      --color-border:      #C4C1B0;
+      --color-border-dark: #82837A;
+      --color-text:         #35362D;
+      --color-text-muted:   #82837A;
+      --color-text-light:   #C4C1B0;
+      --color-text-inverse: #F3F1EE;
+      --color-accent:      #C4C1B0;
+      --color-accent-light:#82837A;
+      --color-accent-dark: #E6E2D7;
+      --color-success:     #7BB785;
+      --color-warning:     #D4772C;
+      --color-error:       #C6292C;
+      --color-info:        #38537B;
+      --color-highlight:   #E2DD2A;
+
+      /* Radius scale（クロソイド前提でやや大きめ） */
+      --r-sm:   8px;
+      --r:      12px;
+      --r-lg:   20px;
+      --r-xl:   28px;
+      --r-pill: 999px;
+
+      /* クロソイド式角丸（CSS Borders Level 4 / Safari TP & Chrome flag） */
+      --corner-shape:      superellipse(2.5);
+      --corner-shape-soft: superellipse(2);
+      --corner-shape-hard: superellipse(3.5);
+
+      --font-sans: 'Lato', 'Noto Sans JP', sans-serif;
+      --font-serif: 'Shippori Mincho', serif;
+      --transition-fast:   150ms cubic-bezier(0.4, 0, 0.2, 1);
+      --transition-normal: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; corner-shape: var(--corner-shape); }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--color-bg);
+      color: var(--color-text);
+      font-size: 1rem;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Layout */
+    .page-header {
+      background: var(--color-text);
+      color: var(--color-text-inverse);
+      padding: 48px 64px;
+    }
+    .page-header h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+    .page-header p {
+      color: var(--color-text-muted);
+      font-size: 0.875rem;
+    }
+
+    .nav {
+      background: var(--color-surface);
+      padding: 0 64px;
+      display: flex;
+      gap: 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .nav a {
+      display: block;
+      padding: 14px 20px;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      color: var(--color-text-muted);
+      text-decoration: none;
+      transition: color var(--transition-fast), background var(--transition-fast);
+    }
+    .nav a:hover { color: var(--color-text); background: var(--color-surface-2); }
+
+    .container { max-width: 1100px; margin: 0 auto; padding: 64px 32px; }
+
+    .section { margin-bottom: 80px; }
+    .section-title {
+      font-size: 0.6875rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--color-text-muted);
+      padding-bottom: 12px;
+      margin-bottom: 32px;
+    }
+
+    /* Color Swatches */
+    .swatches { display: flex; flex-wrap: wrap; gap: 12px; }
+    .swatch { width: 120px; }
+    .swatch-color {
+      height: 72px;
+      border-radius: 8px;
+      margin-bottom: 8px;
+    }
+    .swatch-name { font-size: 0.75rem; font-weight: 600; color: var(--color-text); }
+    .swatch-hex  { font-size: 0.6875rem; color: var(--color-text-muted); font-family: 'JetBrains Mono', monospace; }
+
+    /* Typography */
+    .type-row {
+      display: flex;
+      align-items: baseline;
+      gap: 24px;
+      padding: 20px 0;
+    }
+    /* Highlight marker — 本文中の立たせたい語句専用（蛍光ペン風） */
+    mark, .mark {
+      background: linear-gradient(180deg, transparent 60%, var(--color-highlight) 60%);
+      padding: 0 2px;
+      color: inherit;
+      font-weight: 600;
+    }
+    .type-label   { width: 120px; font-size: 0.5625rem; color: var(--color-text-muted); flex-shrink: 0; }
+    .type-display { font-size: 2.6875rem; font-weight: 200; line-height: 1.05; letter-spacing: -0.03em; color: var(--color-text); }
+    .type-h1      { font-size: 2.125rem;  font-weight: 400; line-height: 1.10; letter-spacing: -0.02em; }
+    .type-h2      { font-size: 1.6875rem; font-weight: 500; line-height: 1.20; letter-spacing: -0.01em; }
+    .type-h3      { font-size: 1.375rem;  font-weight: 600; line-height: 1.30; }
+    .type-h4      { font-size: 1.125rem;  font-weight: 600; line-height: 1.40; }
+    .type-body    { font-size: 0.875rem;  font-weight: 400; line-height: 1.70; }
+    .type-sm      { font-size: 0.6875rem; font-weight: 400; line-height: 1.50; }
+    .type-caption { font-size: 0.5625rem; font-weight: 400; line-height: 1.40; color: var(--color-text-muted); }
+
+    /* Buttons */
+    .btn-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      font-family: var(--font-sans);
+      letter-spacing: 0.01em;
+      cursor: pointer;
+      border: none;
+      transition: all var(--transition-fast);
+    }
+    .btn-primary  { background: var(--color-text); color: var(--color-text-inverse); }
+    .btn-primary:hover  { opacity: 0.82; }
+    .btn-secondary { background: var(--color-surface); color: var(--color-text); }
+    .btn-secondary:hover { background: var(--color-surface-2); }
+    .btn-accent   { background: var(--color-surface-2); color: var(--color-text); }
+    .btn-accent:hover { background: var(--color-border); }
+    .btn-ghost    { background: transparent; color: var(--color-text-muted); }
+    .btn-ghost:hover  { color: var(--color-text); background: var(--color-surface); }
+    .btn-sm { padding: 6px 14px; font-size: 0.8125rem; }
+    .btn-lg { padding: 14px 28px; font-size: 1rem; }
+
+    /* Cards */
+    .card-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .card {
+      background: var(--color-surface);
+      border-radius: 8px;
+      padding: 24px;
+      transition: background var(--transition-fast), transform var(--transition-fast);
+    }
+    .card:hover {
+      background: var(--color-surface-2);
+      transform: translateY(-1px);
+    }
+    .card-label  { font-size: 0.75rem; color: var(--color-text-muted); font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
+    .card-value  { font-size: 2rem; font-weight: 700; letter-spacing: -0.02em; color: var(--color-text); line-height: 1; margin-bottom: 4px; }
+    .card-sub    { font-size: 0.8125rem; color: var(--color-text-muted); }
+    .card-accent { background: var(--color-surface-2); }
+    .card-accent:hover { background: var(--color-border); }
+    .card-dark   { background: var(--color-text); }
+    .card-dark .card-label { color: var(--color-text-muted); }
+    .card-dark .card-value { color: var(--color-text-inverse); }
+    .card-dark .card-sub   { color: var(--color-text-light); }
+
+    /* Badges */
+    .badge-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+    .badge-default  { background: var(--color-surface-2); color: var(--color-text-muted); }
+    .badge-success  { background: #DCFCE7; color: #15803D; }
+    .badge-warning  { background: #FEF3C7; color: #B45309; }
+    .badge-error    { background: #FEE2E2; color: #B91C1C; }
+    .badge-info     { background: #DBEAFE; color: #1D4ED8; }
+    .badge-accent   { background: var(--color-accent-light); color: #F3F1EE; }
+
+    /* Table */
+    .table-wrap { border-radius: 8px; overflow: hidden; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+    th {
+      background: var(--color-surface-2);
+      color: var(--color-text-muted);
+      font-size: 0.6875rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      padding: 10px 16px;
+      text-align: left;
+    }
+    td { padding: 12px 16px; color: var(--color-text); background: var(--color-surface); }
+    tr:nth-child(even) td { background: var(--color-surface-2); }
+
+    /* Input */
+    .form-row { display: flex; gap: 16px; align-items: flex-start; flex-wrap: wrap; }
+    .form-group { flex: 1; min-width: 200px; }
+    .form-label { display: block; font-size: 0.8125rem; font-weight: 500; margin-bottom: 6px; }
+    .input {
+      width: 100%;
+      padding: 10px 14px;
+      background: var(--color-surface);
+      border: none;
+      border-radius: 6px;
+      font-size: 0.875rem;
+      font-family: var(--font-sans);
+      color: var(--color-text);
+      transition: background var(--transition-fast), box-shadow var(--transition-fast);
+    }
+    .input:focus {
+      outline: none;
+      background: var(--color-bg);
+      box-shadow: 0 0 0 3px rgba(53,54,45,0.12);
+    }
+    .input::placeholder { color: var(--color-text-light); }
+    select.input { cursor: pointer; }
+
+    /* Chart bars (CSS only) */
+    .chart-area {
+      background: var(--color-surface);
+      border-radius: 8px;
+      padding: 24px;
+    }
+    .chart-title { font-size: 0.875rem; font-weight: 600; margin-bottom: 24px; }
+    .bars { display: flex; align-items: flex-end; gap: 12px; height: 160px; }
+    .bar-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; height: 100%; justify-content: flex-end; }
+    .bar {
+      width: 100%;
+      border-radius: 4px 4px 0 0;
+      transition: opacity var(--transition-fast);
+    }
+    .bar:hover { opacity: 0.75; }
+    .bar-label { font-size: 0.6875rem; color: var(--color-text-muted); text-align: center; }
+    .bar-val { font-size: 0.75rem; font-weight: 600; }
+
+    /* Divider — spacing only, no line */
+    .divider { height: 0; margin: 48px 0; }
+
+    /* Spacing demo */
+    .spacing-row { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+    .spacing-box { background: var(--color-accent-light); border-radius: 2px; height: 24px; }
+    .spacing-label { font-size: 0.75rem; color: var(--color-text-muted); width: 80px; flex-shrink: 0; }
+
+    /* Sidebar demo */
+    .dashboard-demo {
+      border-radius: 8px;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1fr 1.414fr; /* 白銀比 √2 */
+      height: 320px;
+    }
+    .demo-sidebar {
+      background: var(--color-text);
+      padding: 24px 0;
+    }
+    .demo-sidebar-logo {
+      padding: 0 20px 24px;
+      font-size: 0.8125rem;
+      font-weight: 700;
+      color: var(--color-text-inverse);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .demo-nav-item {
+      padding: 8px 20px;
+      font-size: 0.8125rem;
+      color: var(--color-text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all var(--transition-fast);
+    }
+    .demo-nav-item:hover { background: rgba(243,241,238,0.08); color: var(--color-text-inverse); }
+    .demo-nav-item.active { background: rgba(243,241,238,0.14); color: var(--color-text-inverse); }
+    .demo-main { background: var(--color-bg); padding: 24px; overflow: hidden; }
+    .demo-kpi { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px; }
+    .demo-kpi-card {
+      background: var(--color-surface);
+      border-radius: 8px;
+      padding: 16px;
+    }
+    .demo-kpi-card-accent { background: var(--color-surface-2); }
+    .demo-kpi-label { font-size: 0.6875rem; color: var(--color-text-muted); font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
+    .demo-kpi-val { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; }
+    .demo-kpi-sub { font-size: 0.6875rem; color: var(--color-text-muted); margin-top: 2px; }
+
+    @media (max-width: 768px) {
+      .page-header { padding: 32px 24px; }
+      .nav { padding: 0 24px; overflow-x: auto; }
+      .container { padding: 40px 20px; }
+      .card-grid { grid-template-columns: 1fr; }
+      .dashboard-demo { grid-template-columns: 1fr; height: auto; }
+      .demo-sidebar { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="page-header">
+  <img src="ig_logo_2026.svg" alt="instyle.group" style="height:14px; filter:brightness(0) invert(1); display:block; margin-bottom:16px;">
+  <p>Design System — カラー / タイポグラフィ / コンポーネント / レイアウト — v2.0</p>
+</header>
+
+<nav class="nav">
+  <a href="#colors">カラー</a>
+  <a href="#typography">タイポグラフィ</a>
+  <a href="#components">コンポーネント</a>
+  <a href="#data">データ表示</a>
+  <a href="#layout">レイアウト</a>
+  <a href="#principles">デザイン原則</a>
+</nav>
+
+<div class="container">
+
+  <!-- COLORS -->
+  <section class="section" id="colors">
+    <p class="section-title">Color Palette</p>
+
+    <p style="font-size:0.8125rem; color:var(--color-text-muted); margin-bottom:24px;">ベース</p>
+    <div class="swatches" style="margin-bottom:32px;">
+      <div class="swatch">
+        <div class="swatch-color" style="background:#FFFFFF; outline: 2px solid var(--color-surface-2);"></div>
+        <div class="swatch-name">Background</div>
+        <div class="swatch-hex">#FFFFFF</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#F3F1EE;"></div>
+        <div class="swatch-name">Surface</div>
+        <div class="swatch-hex">#F3F1EE</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#E6E2D7;"></div>
+        <div class="swatch-name">Surface 2</div>
+        <div class="swatch-hex">#E6E2D7</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#E1DCD0;"></div>
+        <div class="swatch-name">Surface 3</div>
+        <div class="swatch-hex">#E1DCD0</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#C4C1B0;"></div>
+        <div class="swatch-name">Muted</div>
+        <div class="swatch-hex">#C4C1B0</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#82837A;"></div>
+        <div class="swatch-name">Text Muted</div>
+        <div class="swatch-hex">#82837A</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#35362D;"></div>
+        <div class="swatch-name">Text</div>
+        <div class="swatch-hex">#35362D</div>
+      </div>
+    </div>
+
+    <p style="font-size:0.8125rem; color:var(--color-text-muted); margin-bottom:24px;">チャート用シーケンス</p>
+    <div class="swatches" style="margin-bottom:32px;">
+      <div class="swatch">
+        <div class="swatch-color" style="background:#E6E2D7;"></div>
+        <div class="swatch-name">Chart 1</div>
+        <div class="swatch-hex">#E6E2D7</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#C4C1B0;"></div>
+        <div class="swatch-name">Chart 2</div>
+        <div class="swatch-hex">#C4C1B0</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#82837A;"></div>
+        <div class="swatch-name">Chart 3</div>
+        <div class="swatch-hex">#82837A</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#F3F1EE; outline: 2px solid var(--color-surface-2);"></div>
+        <div class="swatch-name">Chart 4</div>
+        <div class="swatch-hex">#F3F1EE</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#35362D;"></div>
+        <div class="swatch-name">Chart 5</div>
+        <div class="swatch-hex">#35362D</div>
+      </div>
+    </div>
+
+    <p style="font-size:0.8125rem; color:var(--color-text-muted); margin-bottom:24px;">ステータス</p>
+    <div class="swatches">
+      <div class="swatch">
+        <div class="swatch-color" style="background:#7BB785;"></div>
+        <div class="swatch-name">Success</div>
+        <div class="swatch-hex">#7BB785</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#D4772C;"></div>
+        <div class="swatch-name">Warning</div>
+        <div class="swatch-hex">#D4772C</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#C6292C;"></div>
+        <div class="swatch-name">Error</div>
+        <div class="swatch-hex">#C6292C</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#38537B;"></div>
+        <div class="swatch-name">Info</div>
+        <div class="swatch-hex">#38537B</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#E2DD2A;"></div>
+        <div class="swatch-name">Highlight</div>
+        <div class="swatch-hex">#E2DD2A</div>
+      </div>
+    </div>
+    <p style="font-size:0.6875rem; color:var(--color-text-muted); margin-top:12px; line-height:1.6;">※ Highlight (#E2DD2A) は <code style="background:var(--color-surface); padding:1px 4px; border-radius:3px; font-family:monospace; font-size:0.95em;">&lt;mark&gt;</code> による <mark>本文内ポイントマーキング</mark>専用。CTA / アイコン背景 / 見出し全体 / サイドバーなど面要素には使わない。1 ページ 2〜3 箇所まで。</p>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- TYPOGRAPHY -->
+  <section class="section" id="typography">
+    <p class="section-title">Typography — Lato + Noto Sans JP / Modular Scale 1.25</p>
+    <p style="font-size:0.8125rem; color:var(--color-text-muted); margin-bottom:24px;">モジュラースケール Major Third 1.25 / base 14px: 9 / 11 / 14 / 18 / 22 / 27 / 34 / 43 px</p>
+
+    <div class="type-row">
+      <span class="type-label">Display<br><span style="color:var(--color-accent); font-weight:700;">43px</span></span>
+      <span class="type-display">43</span>
+    </div>
+    <div class="type-row">
+      <span class="type-label">H1<br><span style="color:var(--color-accent); font-weight:700;">34px</span></span>
+      <span class="type-h1">見出し１</span>
+    </div>
+    <div class="type-row">
+      <span class="type-label">H2<br><span style="color:var(--color-accent); font-weight:700;">27px</span></span>
+      <span class="type-h2">見出し２ — Heading Two</span>
+    </div>
+    <div class="type-row">
+      <span class="type-label">H3<br><span style="color:var(--color-accent); font-weight:700;">22px</span></span>
+      <span class="type-h3">見出し３ — Heading Three</span>
+    </div>
+    <div class="type-row">
+      <span class="type-label">H4<br><span style="color:var(--color-accent); font-weight:700;">18px</span></span>
+      <span class="type-h4">見出し４ — Heading Four</span>
+    </div>
+    <div class="type-row">
+      <span class="type-label">Body<br><span style="color:var(--color-accent); font-weight:700;">14px</span></span>
+      <span class="type-body">本文テキスト。読みやすさを最優先に行間 1.7。Body text with Japanese and English mixed.</span>
+    </div>
+    <div class="type-row">
+      <span class="type-label">Small<br><span style="color:var(--color-accent); font-weight:700;">11px</span></span>
+      <span class="type-sm">補足説明・メタ情報・ラベル。Supplementary text, labels, captions.</span>
+    </div>
+    <div class="type-row">
+      <span class="type-label">Caption<br><span style="color:var(--color-accent); font-weight:700;">9px</span></span>
+      <span class="type-caption">最小サイズ。チャート目盛り・脚注専用 / Chart tick labels, footnotes only.</span>
+    </div>
+    <div class="type-row">
+      <span class="type-label">Mark<br><span style="color:var(--color-accent); font-weight:700;">本文内</span><br><span style="color:var(--color-text-muted); font-weight:400;">蛍光ペン</span></span>
+      <span class="type-body">本文の中で <mark>立たせたい語句</mark> をポイント的にマーキングする用途のみ。CTA や面要素には使わない。</span>
+    </div>
+    <div class="type-row">
+      <span class="type-label">Serif<br><span style="color:var(--color-accent); font-weight:700;">11px</span><br><span style="color:var(--color-text-muted); font-weight:400;">明示指示時のみ</span></span>
+      <span style="font-family: var(--font-serif); font-size:0.6875rem; font-weight:700;">明朝体オプション — Shippori Mincho（既定では使用しない）</span>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- COMPONENTS -->
+  <section class="section" id="components">
+    <p class="section-title">Components</p>
+
+    <!-- Buttons -->
+    <p style="font-size:0.8125rem; font-weight:600; margin-bottom:16px;">Buttons</p>
+    <div class="btn-row" style="margin-bottom:12px;">
+      <button class="btn btn-primary">Primary</button>
+      <button class="btn btn-secondary">Secondary</button>
+      <button class="btn btn-accent">Accent</button>
+      <button class="btn btn-ghost">Ghost</button>
+    </div>
+    <div class="btn-row" style="margin-bottom:40px;">
+      <button class="btn btn-primary btn-sm">Small</button>
+      <button class="btn btn-primary">Default</button>
+      <button class="btn btn-primary btn-lg">Large</button>
+    </div>
+
+    <!-- Badges -->
+    <p style="font-size:0.8125rem; font-weight:600; margin-bottom:16px;">Badges</p>
+    <div class="badge-row" style="margin-bottom:40px;">
+      <span class="badge badge-default">Default</span>
+      <span class="badge badge-success">Success</span>
+      <span class="badge badge-warning">Warning</span>
+      <span class="badge badge-error">Error</span>
+      <span class="badge badge-info">Info</span>
+      <span class="badge badge-accent">Accent</span>
+    </div>
+
+    <!-- Cards -->
+    <p style="font-size:0.8125rem; font-weight:600; margin-bottom:16px;">Cards</p>
+    <div class="card-grid" style="margin-bottom:40px;">
+      <div class="card">
+        <div class="card-label">月間売上</div>
+        <div class="card-value">¥12.4M</div>
+        <div class="card-sub">前月比 +8.2%</div>
+      </div>
+      <div class="card card-accent">
+        <div class="card-label">新規顧客</div>
+        <div class="card-value">248</div>
+        <div class="card-sub">先月比 +12名</div>
+      </div>
+      <div class="card card-dark">
+        <div class="card-label">達成率</div>
+        <div class="card-value">94%</div>
+        <div class="card-sub">目標: 100%</div>
+      </div>
+    </div>
+
+    <!-- Form -->
+    <p style="font-size:0.8125rem; font-weight:600; margin-bottom:16px;">Form Inputs</p>
+    <div class="form-row" style="margin-bottom:40px;">
+      <div class="form-group">
+        <label class="form-label">氏名</label>
+        <input class="input" type="text" placeholder="山田 太郎">
+      </div>
+      <div class="form-group">
+        <label class="form-label">メールアドレス</label>
+        <input class="input" type="email" placeholder="taro@instyle.group">
+      </div>
+      <div class="form-group">
+        <label class="form-label">カテゴリ</label>
+        <select class="input">
+          <option>マーケティング</option>
+          <option>デザイン</option>
+          <option>エンジニアリング</option>
+        </select>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- DATA -->
+  <section class="section" id="data">
+    <p class="section-title">Data Visualization</p>
+
+    <div style="display:grid; grid-template-columns:1fr 1.414fr; gap:20px; margin-bottom:40px;"> <!-- 白銀比 √2 -->
+      <!-- Bar Chart -->
+      <div class="chart-area">
+        <div class="chart-title">月次売上推移（百万円）</div>
+        <div class="bars">
+          <div class="bar-wrap">
+            <div class="bar-val" style="font-size:0.625rem; color:var(--color-text-muted);">8.2</div>
+            <div class="bar" style="height:68%; background:#E6E2D7;"></div>
+            <div class="bar-label">1月</div>
+          </div>
+          <div class="bar-wrap">
+            <div class="bar-val" style="font-size:0.625rem; color:var(--color-text-muted);">9.1</div>
+            <div class="bar" style="height:76%; background:#E6E2D7;"></div>
+            <div class="bar-label">2月</div>
+          </div>
+          <div class="bar-wrap">
+            <div class="bar-val" style="font-size:0.625rem; color:var(--color-text-muted);">7.8</div>
+            <div class="bar" style="height:65%; background:#E6E2D7;"></div>
+            <div class="bar-label">3月</div>
+          </div>
+          <div class="bar-wrap">
+            <div class="bar-val" style="font-size:0.625rem; color:var(--color-text-muted);">10.5</div>
+            <div class="bar" style="height:87%; background:#C4C1B0;"></div>
+            <div class="bar-label">4月</div>
+          </div>
+          <div class="bar-wrap">
+            <div class="bar-val" style="font-size:0.625rem; color:var(--color-text-muted);">11.2</div>
+            <div class="bar" style="height:93%; background:#C4C1B0;"></div>
+            <div class="bar-label">5月</div>
+          </div>
+          <div class="bar-wrap">
+            <div class="bar-val" style="font-size:0.625rem; color:var(--color-text-muted);">12.4</div>
+            <div class="bar" style="height:100%; background:#C4C1B0;"></div>
+            <div class="bar-label">6月</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Progress bars -->
+      <div class="chart-area">
+        <div class="chart-title">チャネル別比率</div>
+        <div style="display:flex; flex-direction:column; gap:12px; margin-top:8px;">
+          <div>
+            <div style="display:flex; justify-content:space-between; font-size:0.8125rem; margin-bottom:6px;">
+              <span>直販</span><span style="font-weight:600;">42%</span>
+            </div>
+            <div style="height:8px; background:var(--color-surface-2); border-radius:4px;">
+              <div style="width:42%; height:100%; background:#E6E2D7; border-radius:4px;"></div>
+            </div>
+          </div>
+          <div>
+            <div style="display:flex; justify-content:space-between; font-size:0.8125rem; margin-bottom:6px;">
+              <span>EC</span><span style="font-weight:600;">31%</span>
+            </div>
+            <div style="height:8px; background:var(--color-surface-2); border-radius:4px;">
+              <div style="width:31%; height:100%; background:#C4C1B0; border-radius:4px;"></div>
+            </div>
+          </div>
+          <div>
+            <div style="display:flex; justify-content:space-between; font-size:0.8125rem; margin-bottom:6px;">
+              <span>代理店</span><span style="font-weight:600;">18%</span>
+            </div>
+            <div style="height:8px; background:var(--color-surface-2); border-radius:4px;">
+              <div style="width:18%; height:100%; background:#82837A; border-radius:4px;"></div>
+            </div>
+          </div>
+          <div>
+            <div style="display:flex; justify-content:space-between; font-size:0.8125rem; margin-bottom:6px;">
+              <span>その他</span><span style="font-weight:600;">9%</span>
+            </div>
+            <div style="height:8px; background:var(--color-surface-2); border-radius:4px;">
+              <div style="width:9%; height:100%; background:#E6E2D7; border-radius:4px;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>ブランド名</th>
+            <th>売上（百万円）</th>
+            <th>前期比</th>
+            <th>ステータス</th>
+            <th>担当者</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>INSTYLE Flagship</td>
+            <td>84.2</td>
+            <td style="color:var(--color-success); font-weight:500;">+12.4%</td>
+            <td><span class="badge badge-success">達成</span></td>
+            <td style="color:var(--color-text-muted);">山田 太郎</td>
+          </tr>
+          <tr>
+            <td>CR Studio</td>
+            <td>31.7</td>
+            <td style="color:var(--color-success); font-weight:500;">+5.1%</td>
+            <td><span class="badge badge-success">達成</span></td>
+            <td style="color:var(--color-text-muted);">鈴木 花子</td>
+          </tr>
+          <tr>
+            <td>Digital Branch</td>
+            <td>19.3</td>
+            <td style="color:var(--color-warning); font-weight:500;">-2.8%</td>
+            <td><span class="badge badge-warning">進行中</span></td>
+            <td style="color:var(--color-text-muted);">佐藤 健</td>
+          </tr>
+          <tr>
+            <td>Media & PR</td>
+            <td>8.9</td>
+            <td style="color:var(--color-error); font-weight:500;">-9.2%</td>
+            <td><span class="badge badge-error">要対応</span></td>
+            <td style="color:var(--color-text-muted);">田中 美咲</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- LAYOUT -->
+  <section class="section" id="layout">
+    <p class="section-title">Layout — 比率システム & Dashboard</p>
+
+    <p style="font-size:0.8125rem; font-weight:600; margin-bottom:16px;">比率システム</p>
+    <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:40px;">
+      <div>
+        <div style="font-size:0.6875rem; text-transform:uppercase; letter-spacing:0.07em; color:var(--color-text-muted); margin-bottom:6px;">白銀比 √2 — 1 : 1.414 &nbsp;／&nbsp; サイドバー・2カラム・A4比率パネル（静か・端正）</div>
+        <div style="display:grid; grid-template-columns:1fr 1.414fr; gap:3px; height:36px; border-radius:6px; overflow:hidden;">
+          <div style="background:var(--color-text); display:flex; align-items:center; justify-content:center;"><span style="color:var(--color-text-inverse); font-size:0.625rem; font-weight:600;">1</span></div>
+          <div style="background:var(--color-surface-2); display:flex; align-items:center; justify-content:center;"><span style="font-size:0.625rem; font-weight:600; color:var(--color-text-muted);">√2 = 1.414</span></div>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:0.6875rem; text-transform:uppercase; letter-spacing:0.07em; color:var(--color-text-muted); margin-bottom:6px;">プラスチック数 ρ — 1 : 1.325 &nbsp;／&nbsp; カード・画像枠・モジュール（柔らかい・自然）</div>
+        <div style="display:grid; grid-template-columns:1fr 1.325fr; gap:3px; height:36px; border-radius:6px; overflow:hidden;">
+          <div style="background:var(--color-text); display:flex; align-items:center; justify-content:center;"><span style="color:var(--color-text-inverse); font-size:0.625rem; font-weight:600;">1</span></div>
+          <div style="background:var(--color-surface-2); display:flex; align-items:center; justify-content:center;"><span style="font-size:0.625rem; font-weight:600; color:var(--color-text-muted);">ρ = 1.325</span></div>
+        </div>
+      </div>
+    </div>
+
+    <p style="font-size:0.8125rem; font-weight:600; margin-bottom:16px;">Dashboard Preview — 白銀比（1 : 1.414）</p>
+    <div class="dashboard-demo">
+      <div class="demo-sidebar">
+        <div class="demo-sidebar-logo"><img src="ig_logo_2026.svg" alt="instyle.group" style="height:14px; filter:brightness(0) invert(1); opacity:0.85; max-width:100%; display:block;"></div>
+        <div class="demo-nav-item active">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          ダッシュボード
+        </div>
+        <div class="demo-nav-item">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 3h18v18H3z"/><path d="M3 9h18M9 21V9"/></svg>
+          レポート
+        </div>
+        <div class="demo-nav-item">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 3"/></svg>
+          スケジュール
+        </div>
+        <div class="demo-nav-item">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          チームメンバー
+        </div>
+        <div class="demo-nav-item">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+          設定
+        </div>
+      </div>
+      <div class="demo-main">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+          <div>
+            <div style="font-size:1.125rem; font-weight:700; letter-spacing:-0.02em;">ダッシュボード</div>
+            <div style="font-size:0.75rem; color:var(--color-text-muted);">2026年4月 — 月次サマリー</div>
+          </div>
+          <button class="btn btn-primary btn-sm">レポート出力</button>
+        </div>
+        <div class="demo-kpi">
+          <div class="demo-kpi-card">
+            <div class="demo-kpi-label">総売上</div>
+            <div class="demo-kpi-val">¥144M</div>
+            <div class="demo-kpi-sub">前月比 <span style="color:var(--color-success)">+8.2%</span></div>
+          </div>
+          <div class="demo-kpi-card">
+            <div class="demo-kpi-label">新規顧客</div>
+            <div class="demo-kpi-val">248</div>
+            <div class="demo-kpi-sub">目標 200 <span style="color:var(--color-success)">達成</span></div>
+          </div>
+          <div class="demo-kpi-card demo-kpi-card-accent">
+            <div class="demo-kpi-label">達成率</div>
+            <div class="demo-kpi-val">94%</div>
+            <div class="demo-kpi-sub">残り <span style="font-weight:600;">6%</span></div>
+          </div>
+        </div>
+        <div style="background:var(--color-surface); border-radius:8px; padding:16px;">
+          <div style="font-size:0.75rem; font-weight:600; color:var(--color-text-muted); text-transform:uppercase; letter-spacing:0.07em; margin-bottom:10px;">最新アクティビティ</div>
+          <div style="font-size:0.8125rem; color:var(--color-text-muted); text-align:center; padding:16px 0;">データを読み込み中...</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DESIGN PRINCIPLES -->
+  <div class="divider"></div>
+  <section class="section" id="principles">
+    <p class="section-title">Design Principles — ゲシュタルト / 五分割法 / Van de Graaf</p>
+
+    <!-- Gestalt -->
+    <p style="font-size:0.8125rem; font-weight:600; margin-bottom:16px;">ゲシュタルト原則 — 情報整理の四原則</p>
+    <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:16px; margin-bottom:40px;">
+      <!-- Proximity -->
+      <div style="background:var(--color-surface); border-radius:8px; padding:16px;">
+        <div style="font-size:0.6875rem; font-weight:600; color:var(--color-text); margin-bottom:8px; text-transform:uppercase; letter-spacing:0.06em;">近接 Proximity</div>
+        <div style="font-size:0.6875rem; color:var(--color-text-muted); line-height:1.5; margin-bottom:12px;">近い要素は仲間に見える</div>
+        <div style="display:flex; gap:14px;">
+          <div style="display:flex; flex-direction:column; gap:2px;"><div style="width:12px; height:12px; background:var(--color-text); border-radius:2px;"></div><div style="width:12px; height:12px; background:var(--color-text); border-radius:2px;"></div><div style="width:12px; height:12px; background:var(--color-text); border-radius:2px;"></div></div>
+          <div style="display:flex; flex-direction:column; gap:2px;"><div style="width:12px; height:12px; background:var(--color-text); border-radius:2px;"></div><div style="width:12px; height:12px; background:var(--color-text); border-radius:2px;"></div><div style="width:12px; height:12px; background:var(--color-text); border-radius:2px;"></div></div>
+        </div>
+      </div>
+      <!-- Similarity -->
+      <div style="background:var(--color-surface); border-radius:8px; padding:16px;">
+        <div style="font-size:0.6875rem; font-weight:600; color:var(--color-text); margin-bottom:8px; text-transform:uppercase; letter-spacing:0.06em;">類同 Similarity</div>
+        <div style="font-size:0.6875rem; color:var(--color-text-muted); line-height:1.5; margin-bottom:12px;">同じ見た目は同じ役割</div>
+        <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:4px;">
+          <div style="aspect-ratio:1; background:var(--color-text); border-radius:2px;"></div>
+          <div style="aspect-ratio:1; background:var(--color-accent-light); border-radius:50%;"></div>
+          <div style="aspect-ratio:1; background:var(--color-text); border-radius:2px;"></div>
+          <div style="aspect-ratio:1; background:var(--color-text); border-radius:2px;"></div>
+        </div>
+      </div>
+      <!-- Continuity -->
+      <div style="background:var(--color-surface); border-radius:8px; padding:16px;">
+        <div style="font-size:0.6875rem; font-weight:600; color:var(--color-text); margin-bottom:8px; text-transform:uppercase; letter-spacing:0.06em;">連続 Continuity</div>
+        <div style="font-size:0.6875rem; color:var(--color-text-muted); line-height:1.5; margin-bottom:12px;">視線は流れに沿って動く</div>
+        <svg viewBox="0 0 100 40" style="width:100%; height:auto;">
+          <path d="M 0 30 Q 25 5, 50 20 T 100 10" fill="none" stroke="#35362D" stroke-width="2"/>
+          <circle cx="0" cy="30" r="3" fill="#35362D"/>
+          <circle cx="50" cy="20" r="3" fill="#35362D"/>
+          <circle cx="100" cy="10" r="3" fill="#35362D"/>
+        </svg>
+      </div>
+      <!-- Figure-Ground -->
+      <div style="background:var(--color-surface); border-radius:8px; padding:16px;">
+        <div style="font-size:0.6875rem; font-weight:600; color:var(--color-text); margin-bottom:8px; text-transform:uppercase; letter-spacing:0.06em;">図と地 Figure / Ground</div>
+        <div style="font-size:0.6875rem; color:var(--color-text-muted); line-height:1.5; margin-bottom:12px;">前景と背景を明確に</div>
+        <div style="background:var(--color-surface-2); border-radius:4px; padding:8px;">
+          <div style="background:var(--color-bg); border-radius:3px; padding:6px;">
+            <div style="background:var(--color-text); height:12px; border-radius:2px;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rule of Fifths -->
+    <p style="font-size:0.8125rem; font-weight:600; margin-bottom:16px;">五分割法 — ヒーロー・キービジュアル配置</p>
+    <p style="font-size:0.6875rem; color:var(--color-text-muted); margin-bottom:12px;">縦横を 5 等分した <strong>1/5 ライン</strong>（赤）と <strong>交点</strong>（黒丸）に主役を配置すると編集的な余白が生まれる</p>
+    <div style="position:relative; aspect-ratio:16/9; background:var(--color-surface); border-radius:8px; overflow:hidden; margin-bottom:40px;">
+      <!-- Vertical lines -->
+      <div style="position:absolute; top:0; bottom:0; left:20%; width:1px; background:rgba(198,41,44,0.5);"></div>
+      <div style="position:absolute; top:0; bottom:0; left:40%; width:1px; background:rgba(198,41,44,0.5);"></div>
+      <div style="position:absolute; top:0; bottom:0; left:60%; width:1px; background:rgba(198,41,44,0.5);"></div>
+      <div style="position:absolute; top:0; bottom:0; left:80%; width:1px; background:rgba(198,41,44,0.5);"></div>
+      <!-- Horizontal lines -->
+      <div style="position:absolute; left:0; right:0; top:20%; height:1px; background:rgba(198,41,44,0.5);"></div>
+      <div style="position:absolute; left:0; right:0; top:40%; height:1px; background:rgba(198,41,44,0.5);"></div>
+      <div style="position:absolute; left:0; right:0; top:60%; height:1px; background:rgba(198,41,44,0.5);"></div>
+      <div style="position:absolute; left:0; right:0; top:80%; height:1px; background:rgba(198,41,44,0.5);"></div>
+      <!-- Intersection markers -->
+      <div style="position:absolute; left:20%; top:20%; width:10px; height:10px; background:var(--color-text); border-radius:50%; transform:translate(-50%,-50%);"></div>
+      <div style="position:absolute; left:80%; top:20%; width:10px; height:10px; background:var(--color-text); border-radius:50%; transform:translate(-50%,-50%);"></div>
+      <div style="position:absolute; left:20%; top:80%; width:10px; height:10px; background:var(--color-text); border-radius:50%; transform:translate(-50%,-50%);"></div>
+      <div style="position:absolute; left:80%; top:80%; width:10px; height:10px; background:var(--color-text); border-radius:50%; transform:translate(-50%,-50%);"></div>
+    </div>
+
+    <!-- Van de Graaf Canon -->
+    <p style="font-size:0.8125rem; font-weight:600; margin-bottom:16px;">ヴァン・デ・グラーフ・カノン — プレゼン・章扉</p>
+    <p style="font-size:0.6875rem; color:var(--color-text-muted); margin-bottom:12px;">A4 比率（白銀比）の紙面で、上 1/9・外 1/9・下 2/9・内 2/9 の余白を取ると下重心の上品な配置になる</p>
+    <div style="display:flex; gap:16px; align-items:flex-start; margin-bottom:8px;">
+      <div style="position:relative; aspect-ratio:1/1.414; width:180px; background:var(--color-surface); border-radius:6px; padding:11.1% 22.2% 22.2% 11.1%; box-sizing:border-box;">
+        <div style="background:var(--color-surface-2); border-radius:3px; height:100%; display:flex; flex-direction:column; gap:4px; padding:8px;">
+          <div style="background:var(--color-text); height:6px; border-radius:1px; width:80%;"></div>
+          <div style="background:var(--color-border); height:3px; border-radius:1px; width:100%;"></div>
+          <div style="background:var(--color-border); height:3px; border-radius:1px; width:90%;"></div>
+          <div style="background:var(--color-border); height:3px; border-radius:1px; width:60%;"></div>
+        </div>
+      </div>
+      <div style="flex:1; padding-top:8px;">
+        <div style="font-size:0.75rem; color:var(--color-text-muted); line-height:1.7;">
+          ・top &nbsp;&nbsp;: 11.1%（1/9）<br>
+          ・left &nbsp;: 11.1%（1/9）<br>
+          ・right : 22.2%（2/9）<br>
+          ・bottom: 22.2%（2/9）<br>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Spacing -->
+  <div class="divider"></div>
+  <section class="section">
+    <p class="section-title">Spacing Scale — 8px base</p>
+    <div>
+      <div class="spacing-row"><span class="spacing-label">4px</span><div class="spacing-box" style="width:4px;"></div></div>
+      <div class="spacing-row"><span class="spacing-label">8px</span><div class="spacing-box" style="width:8px;"></div></div>
+      <div class="spacing-row"><span class="spacing-label">12px</span><div class="spacing-box" style="width:12px;"></div></div>
+      <div class="spacing-row"><span class="spacing-label">16px</span><div class="spacing-box" style="width:16px;"></div></div>
+      <div class="spacing-row"><span class="spacing-label">24px</span><div class="spacing-box" style="width:24px;"></div></div>
+      <div class="spacing-row"><span class="spacing-label">32px</span><div class="spacing-box" style="width:32px;"></div></div>
+      <div class="spacing-row"><span class="spacing-label">48px</span><div class="spacing-box" style="width:48px;"></div></div>
+      <div class="spacing-row"><span class="spacing-label">64px</span><div class="spacing-box" style="width:64px;"></div></div>
+      <div class="spacing-row"><span class="spacing-label">96px</span><div class="spacing-box" style="width:96px;"></div></div>
+    </div>
+  </section>
+
+</div>
+
+<footer style="background:var(--color-surface); padding:24px 64px; font-size:0.75rem; color:var(--color-text-muted); display:flex; justify-content:space-between;">
+  <span>instyle.group Design System v2.0</span>
+  <span>2026-04-20</span>
+</footer>
+
+</body>
+</html>

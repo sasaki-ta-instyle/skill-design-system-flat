@@ -113,18 +113,21 @@ module.exports = {
 ### フォントファミリー
 
 ```css
-/* Google Fonts 読み込み（HTML head に追加） */
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700&family=M+PLUS+1p:wght@100;300;400;500;700&family=Shippori+Mincho:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+/* フォント読み込み（HTML head に追加） */
+<!-- Gen Interface JP（本文 + Display を一括配信） -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gen-interface-jp@0.1.2/all.css">
 
 :root {
-  --font-sans:  'Lato', 'Noto Sans JP', sans-serif;
-  --font-serif: 'Shippori Mincho', serif;  /* 既定では使用しない。ユーザーから「明朝で」「serif で」「エディトリアルっぽく」と明示指示があった時のみ */
-  --font-mono:  'JetBrains Mono', monospace;
+  --font-sans:    'Gen Interface JP', sans-serif;
+  --font-display: 'Gen Interface JP Display', 'Gen Interface JP', sans-serif;  /* 見出し（h1〜h4）に当てる */
+  --font-mono:    'JetBrains Mono', monospace;
 }
+
+/* 見出しは Display を当てる（base スタイル） */
+h1, h2, h3, h4 { font-family: var(--font-display); }
 ```
 
-> **明朝体（`--font-serif`）の運用ルール**: 標準では使わない。eyebrow / 見出し / TOC タイトル / ステップ番号 / フッタータグなどに **自動で serif italic を当てない**。ユーザーから「明朝で」「serif で」「エディトリアルっぽく」と明示指示があった時のみ `var(--font-serif)` を使う。代替の eyebrow パターンは `font-size: 0.625rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em;` の **tracked sans**。
+> **明朝体は使わない**。eyebrow / 見出し / TOC タイトル / ステップ番号 / フッタータグなどには **tracked sans**（`font-size: 0.625rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em;`）を使う。
 
 ### タイプスケール（モジュラースケール / Major Third 1.25・base 14px）
 
@@ -503,7 +506,7 @@ const chartColors = ['#E6E2D7', '#C4C1B0', '#82837A', '#F3F1EE', '#35362D'];
 - 余白を惜しまない — 要素間は思い切って広めに
 - テキスト階層は最大3段階（H2 → H3 → Body）
 - データには必ずラベルと単位を付ける
-- `Lato` + `Noto Sans JP` の組み合わせを守る
+- `Gen Interface JP` を本文、`Gen Interface JP Display` を見出し（h1〜h4）に当てる
 - border-radius は `6px`（小）または `8px`（標準）で統一
 - アイコンは `lucide-react` を優先使用
 - **要素の区切りは背景色の段差で表現する**（bg → surface → surface-2 → text）

@@ -1,6 +1,6 @@
 ---
 name: skill-design-system-flat
-description: Apply the instyle.group flat design system — opaque warm-neutral surface tones (white → #F3F1EE → #E6E2D7 → #E1DCD0 → #35362D) with separation done by background-color steps, NOT borders or shadows. 8px grid spacing, Lato + Noto Sans JP typography, Major Third 1.25 modular type scale on a 14px base, and superellipse corner-shape. Use this when the user asks for "flat"/"フラット"/"ミニマル"/"contrast-based" UI, when they want the instyle.group look without translucency or backdrop blur, when a project's CLAUDE.md declares this design system, or when generating dashboards, reports, slides, or landing pages that should feel quiet and editorial rather than glassy.
+description: Apply the instyle.group flat design system — opaque warm-neutral surface tones (white → #F3F1EE → #E6E2D7 → #E1DCD0 → #35362D) with separation done by background-color steps, NOT borders or shadows. 8px grid spacing, Gen Interface JP (with Display variant for headings) typography, Major Third 1.25 modular type scale on a 14px base, and superellipse corner-shape. Use this when the user asks for "flat"/"フラット"/"ミニマル"/"contrast-based" UI, when they want the instyle.group look without translucency or backdrop blur, when a project's CLAUDE.md declares this design system, or when generating dashboards, reports, slides, or landing pages that should feel quiet and editorial rather than glassy.
 ---
 
 # instyle.group Flat Design System
@@ -35,15 +35,15 @@ A `box-shadow: 0 2px 8px rgba(0,0,0,.08)` is a flat-system smell — delete it.
 
 ### 3. Typography
 
-- `--font-sans: 'Lato', 'Noto Sans JP', sans-serif` — Lato for Latin, Noto
-  Sans JP for Japanese, in that order.
+- `--font-sans: 'Gen Interface JP', sans-serif` for body text and
+  `--font-display: 'Gen Interface JP Display', 'Gen Interface JP', sans-serif`
+  for headings (h1–h4). Gen Interface JP handles both Latin and Japanese.
 - Modular type scale **Major Third (1.25) on a 14px base** (Display 43 /
   H1 34 / H2 27 / H3 22 / H4 18 / Body 14 / Small 11 / Caption 9).
 - Min font-size 11px. Caption 9px is for chart axis labels only.
 - Heading hierarchy is at most 3 levels (typically H2 → H3 → Body).
-- Serif (`Shippori Mincho`) is **opt-in only**. Do not use it unless the
-  user explicitly says "明朝" / "serif" / "editorial". For eyebrow labels
-  and step numbers, use the tracked-sans `.eyebrow` style.
+- **Do not use serif / Mincho.** For eyebrow labels and step numbers,
+  use the tracked-sans `.eyebrow` style.
 
 ### 4. Color usage
 
@@ -99,11 +99,10 @@ washes. 2–3 uses per page maximum.
    stylesheet folder, import them before any component CSS.
 3. Set the page background to `--color-bg` (white) and use cards with
    `--color-surface` to lift content off it.
-4. Load Google Fonts in `<head>`:
+4. Load the font in `<head>` (Gen Interface JP ships body + Display in
+   one stylesheet):
    ```html
-   <link rel="preconnect" href="https://fonts.googleapis.com">
-   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700&family=Noto+Sans+JP:wght@400;500;700&family=Shippori+Mincho:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gen-interface-jp@0.1.2/all.css">
    ```
 5. Drop in the brand favicon/logo from `assets/` if the project carries the
    instyle.group identity.
@@ -128,7 +127,7 @@ washes. 2–3 uses per page maximum.
 - ❌ Adding `box-shadow` to cards "for depth"
 - ❌ Filling panels or CTAs with `#E2DD2A`
 - ❌ Stacking 3+ accent colors on one screen
-- ❌ Using Shippori Mincho without explicit user opt-in
+- ❌ Using serif / Mincho fonts (the system is sans-only)
 - ❌ Hardcoding hex colors instead of tokens
 - ❌ Round-arc `border-radius` only — must pair with `corner-shape`
 - ❌ More than 3 heading levels in one view

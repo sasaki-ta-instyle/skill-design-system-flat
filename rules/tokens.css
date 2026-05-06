@@ -53,8 +53,8 @@
   --corner-shape-hard: superellipse(3.5);  /* squarer */
 
   /* ── Typography ───────────────────────────────────── */
-  --font-sans:  'Lato', 'Noto Sans JP', sans-serif;
-  --font-serif: 'Shippori Mincho', serif;  /* opt-in only */
+  --font-sans:    'Gen Interface JP', sans-serif;
+  --font-display: 'Gen Interface JP Display', 'Gen Interface JP', sans-serif;  /* headings (h1–h4) */
 
   /* ── Motion ───────────────────────────────────────── */
   --transition-fast:   150ms cubic-bezier(0.4, 0, 0.2, 1);
@@ -64,3 +64,6 @@
 /* Apply continuous-curvature corner shape to all elements.
    Browsers without `corner-shape` fall back to standard border-radius. */
 * { corner-shape: var(--corner-shape); }
+
+/* Headings use the Display variant. */
+h1, h2, h3, h4 { font-family: var(--font-display); }

@@ -26,11 +26,11 @@
 - 同画面で3色以上のアクセントを使わない
 
 **タイポグラフィ**
-- フォント: `Lato`（英数字）+ `Noto Sans JP`（日本語）
+- フォント: `Gen Interface JP`（本文）+ `Gen Interface JP Display`（見出し h1〜h4）
 - タイプスケールは **モジュラースケール Major Third 1.25 / base 14px**（Liquid 版は 1.333 で別物）：Display 43 / H1 34 / H2 27 / H3 22 / H4 18 / Body 14 / Small 11 / Caption 9 px
 - 最小フォントサイズ: `0.6875rem (11px)` ／ Caption (9px) はチャート目盛り専用
 - 見出しは最大3階層（H2 → H3 → Body）
-- **明朝体（`--font-serif: 'Shippori Mincho'`）は既定では使わない**。ユーザーから「明朝で」「serif で」「エディトリアルっぽく」と明示指示があった時のみ使用。eyebrow / 見出し / ステップ番号などには tracked sans（`font-size: 0.625rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em;`）を使う
+- **明朝体は使わない**。eyebrow / 見出し / ステップ番号などには tracked sans（`font-size: 0.625rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em;`）を使う
 
 **ハイライト色 `--color-highlight: #E2DD2A`**
 - **本文中で立たせたい語句のポイントマーキング専用**（蛍光ペン風）
@@ -154,23 +154,26 @@ padding: 10px 14px;
   --corner-shape-soft: superellipse(2);
   --corner-shape-hard: superellipse(3.5);
 
-  --font-sans: 'Lato', 'Noto Sans JP', sans-serif;
+  --font-sans:    'Gen Interface JP', sans-serif;
+  --font-display: 'Gen Interface JP Display', 'Gen Interface JP', sans-serif;
   --transition-fast:   150ms cubic-bezier(0.4, 0, 0.2, 1);
   --transition-normal: 250ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* 全要素にデフォルト適用 */
 * { corner-shape: var(--corner-shape); }
+
+/* 見出しは Display を当てる */
+h1, h2, h3, h4 { font-family: var(--font-display); }
 ```
 
 ---
 
-## Google Fonts 読み込み（HTML head）
+## フォント読み込み（HTML head）
 
 ```html
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700&family=Noto+Sans+JP:wght@400;500;700&family=Shippori+Mincho:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- Gen Interface JP（本文 + Display を一括配信） -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gen-interface-jp@0.1.2/all.css">
 ```
 
 ---

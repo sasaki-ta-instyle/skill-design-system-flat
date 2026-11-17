@@ -31,10 +31,10 @@
   --color-accent-dark:  #E6E2D7;
 
   /* ── Status ───────────────────────────────────────── */
-  --color-success:     #16A34A;
-  --color-warning:     #D97706;
+  --color-success:     #7BB785;
+  --color-warning:     #D4772C;
   --color-error:       #C6292C;
-  --color-info:        #2563EB;
+  --color-info:        #38537B;
 
   /* Highlight — inline text marker only.
      Never use as a fill for CTAs, panels, badges, or icon backgrounds. */
@@ -53,6 +53,7 @@
   --corner-shape-hard: superellipse(3.5);  /* squarer */
 
   /* ── Typography ───────────────────────────────────── */
+  /* CDN: gen-interface-jp@0.5.0/all.css — 8 weights (100–800) */
   --font-sans:    'Gen Interface JP', sans-serif;
   --font-display: 'Gen Interface JP Display', 'Gen Interface JP', sans-serif;  /* headings (h1–h4) */
 

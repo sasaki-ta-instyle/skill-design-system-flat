@@ -112,22 +112,35 @@ module.exports = {
 
 ### フォントファミリー
 
-```css
-/* フォント読み込み（HTML head に追加） */
-<!-- Gen Interface JP（本文 + Display を一括配信） -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gen-interface-jp@0.1.2/all.css">
+UI / 本文は **Gen Interface JP** をベースに、見出しは **Gen Interface JP Display** を使う。和文・欧文を 1 ファミリで賄うため、従来の `Lato + Noto Sans JP` 構成は廃止した。明朝（Shippori Mincho）は**オプトイン**（明示指示時のみ別途読み込み）。
 
+使用可能ウェイトは Thin (100) / ExtraLight (200) / Light (300) / Regular (400) / Medium (500) / SemiBold (600) / Bold (700) / ExtraBold (800) の **8 段階**。`Gen Interface JP` / `Gen Interface JP Display` どちらも同じ 8 weights を `all.css` 一括で読み込む。
+
+> このテンプレでは採用者がウェイト選定で迷わないよう、`all.css`（16 styles を 1 リクエストで配信）を既定とする。プロダクション最適化が必要になったら、公式 README の per-weight CSS（例：`cdn/400.css`、`cdn/display-700.css`）に切り替えると転送量を削減できる。
+
+```html
+<!-- HTML head -->
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gen-interface-jp@0.5.0/all.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+```
+
+```css
 :root {
   --font-sans:    'Gen Interface JP', sans-serif;
-  --font-display: 'Gen Interface JP Display', 'Gen Interface JP', sans-serif;  /* 見出し（h1〜h4）に当てる */
-  --font-mono:    'JetBrains Mono', monospace;
+  --font-display: 'Gen Interface JP Display', 'Gen Interface JP', sans-serif;
+  --font-mono:    'JetBrains Mono', 'Menlo', monospace;
+  /* --font-serif: 'Shippori Mincho', serif;
+     オプトイン時のみ <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600;700;800&display=swap"> を head に追加してから利用 */
 }
 
-/* 見出しは Display を当てる（base スタイル） */
+/* 見出しは Display を当てる */
 h1, h2, h3, h4 { font-family: var(--font-display); }
 ```
 
-> **明朝体は使わない**。eyebrow / 見出し / TOC タイトル / ステップ番号 / フッタータグなどには **tracked sans**（`font-size: 0.625rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em;`）を使う。
+> **明朝体（`--font-serif`）の運用ルール**: 標準では使わない（CDN にも含めない）。eyebrow / 見出し / TOC タイトル / ステップ番号 / フッタータグなどに **自動で serif italic を当てない**。ユーザーから「明朝で」「serif で」「エディトリアルっぽく」と明示指示があった時のみ Shippori Mincho を別途 Google Fonts から読み込み、`var(--font-serif)` を有効化する。代替の eyebrow パターンは `font-size: 0.625rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em;` の **tracked sans**。
 
 ### タイプスケール（モジュラースケール / Major Third 1.25・base 14px）
 
@@ -294,6 +307,33 @@ CSS Borders Level 4 の `corner-shape: superellipse(<n>)` を使用。`n` は曲
 .btn-accent:hover { background: var(--color-border); }
 ```
 
+### テキストリンク
+
+本文中（段落・リスト・テーブルセル）の `<a>` には**下線を引く**。CTA ボタン（`.btn`）やカード型リンク（`.card`）は下線なしのまま、テキストフローに混じる外部 URL や内部参照だけ視覚的に区別する。
+
+| プロパティ | 値 | 理由 |
+|---|---|---|
+| `text-decoration` | `underline` | リンクであることを明示 |
+| `text-decoration-color` | `var(--color-text-muted)` | 主張しすぎない控えめな線色 |
+| `text-decoration-thickness` | `1px` | 全体の細線トーンに合わせる |
+| `text-underline-offset` | `0.22em` | 日本語のディセンダーと衝突しない余白 |
+| hover 時 | 線色 → `var(--color-text)` / 太さ → `1.5px` | わずかに強調 |
+
+```css
+:where(p, li, td) a:not(.btn):not(.card) {
+  text-decoration: underline;
+  text-underline-offset: 0.22em;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--color-text-muted);
+}
+:where(p, li, td) a:not(.btn):not(.card):hover {
+  text-decoration-color: var(--color-text);
+  text-decoration-thickness: 1.5px;
+}
+```
+
+> サイドバー TOC やヒーロー CTA など、**コンポーネント自体がクリック可能領域を持つ**ものは下線対象外（既に視覚的に分かる）。
+
 ### テーブル
 
 行区切りはボーダーでなく背景色の交互表示で表現する。
@@ -337,11 +377,13 @@ CSS Borders Level 4 の `corner-shape: superellipse(<n>)` を使用。`n` は曲
   font-size: 0.75rem;
   font-weight: 500;
 }
+/* すべて不透明ベタ色（下地依存を避ける）。リキッド系とも統一原則 */
 .badge-default  { background: var(--color-surface-2); color: var(--color-text-muted); }
 .badge-success  { background: #DCFCE7; color: #15803D; }
 .badge-warning  { background: #FEF3C7; color: #B45309; }
 .badge-error    { background: #FEE2E2; color: #B91C1C; }
-.badge-accent   { background: var(--color-accent-light); color: #8B6914; }
+.badge-info     { background: #DBEAFE; color: #1D4ED8; }
+.badge-accent   { background: var(--color-accent-light); color: var(--color-surface); }
 ```
 
 ### インプット / フォーム
@@ -366,6 +408,25 @@ CSS Borders Level 4 の `corner-shape: superellipse(<n>)` を使用。`n` は曲
 }
 .input::placeholder { color: var(--color-text-light); }
 ```
+
+### ロゴ / ブランド表記（INSTYLE GROUP）
+
+ヘッダー・フッター等で「INSTYLE GROUP」を出す場合は **テキスト表記ではなくロゴ（`ig_logo_2026.svg`）を優先**する。社内向けが主目的の制作物が大半なので、ロゴは**主張させずに小さめ**に配置する。
+
+**ルール**
+- 表示は `ig_logo_2026.svg` をそのまま `<img>` で配置（色変更しない）
+- 推奨サイズ: `height: 14px`（基準）／ 最大でも `height: 18px`
+- 同じ画面内に他のロゴと並べる場合も 14〜18px の帯に収める
+- 背景色は問わない（SVG 自体が `currentColor` ではなく固定色で読みやすい）
+- どうしてもテキスト表記が必要な場合（メール本文／プレーンテキスト埋め込み等）のみ「INSTYLE GROUP」と書く
+
+```html
+<a href="https://instyle.group" aria-label="INSTYLE GROUP">
+  <img src="/_shared/static/logo.svg" alt="INSTYLE GROUP" style="height: 14px; display: block;">
+</a>
+```
+
+> 使ってはいけない例: ヒーローの中央に大きく置く、見出し代わりに 32px 以上で配置、装飾的に角度を付けて配置、accent カラーで塗りつぶす。
 
 ---
 
@@ -506,7 +567,7 @@ const chartColors = ['#E6E2D7', '#C4C1B0', '#82837A', '#F3F1EE', '#35362D'];
 - 余白を惜しまない — 要素間は思い切って広めに
 - テキスト階層は最大3段階（H2 → H3 → Body）
 - データには必ずラベルと単位を付ける
-- `Gen Interface JP` を本文、`Gen Interface JP Display` を見出し（h1〜h4）に当てる
+- `Gen Interface JP` を本文・UI、`Gen Interface JP Display` を見出しに使う（和文・欧文を 1 ファミリで揃える）
 - border-radius は `6px`（小）または `8px`（標準）で統一
 - アイコンは `lucide-react` を優先使用
 - **要素の区切りは背景色の段差で表現する**（bg → surface → surface-2 → text）
@@ -626,3 +687,89 @@ project/
 ---
 
 *最終更新: 2026-04-20 | instyle.group Creative Team*
+
+---
+
+## 日本語改行 — BudouX（workspace 標準）
+
+日本語テキストが単語や句節の途中で不自然に改行しないよう、**BudouX**（Google 製の意味区切りライブラリ）を workspace 全体の既定として採用する。BudouX が意味の切れ目に `<wbr>` を挿入し、CSS 側で `word-break: keep-all` を設定することで、「BudouX が入れた位置以外では改行しない」動作にする。
+
+> **新規プロジェクトの既定**。プレゼン / LP / 記事 / メニュー / 案内など、日本語文が長めの公開ページで特に効果が大きい。オプトアウトは可（社内 ad-hoc スクリプト等では省略してよい）。
+
+### 1. HTML `<head>` に追加
+
+```html
+<script type="module">
+  import { loadDefaultJapaneseParser } from 'https://esm.sh/budoux@0.7.0';
+  const parser = loadDefaultJapaneseParser();
+  const SELECTORS = 'h1, h2, h3, h4, p, li, td, th, .callout, .lede, blockquote';
+  const apply = () => {
+    document.querySelectorAll(SELECTORS).forEach(el => {
+      if (el.dataset.budoux === '1') return;
+      try {
+        el.innerHTML = parser.translateHTMLString(el.innerHTML);
+        el.dataset.budoux = '1';
+      } catch (_) {}
+    });
+  };
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', apply);
+  } else {
+    apply();
+  }
+</script>
+```
+
+React / Next.js の場合は `useEffect` 内で同じロジックを実行するか、`budoux-react`（`npm i budoux`）の React コンポーネントを使う。
+
+### 2. CSS で改行制御
+
+```css
+:where(h1, h2, h3, h4, p, li, td, th, .callout, .lede, blockquote) {
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+  line-break: strict;
+}
+```
+
+`:where()` で詳細度をゼロにしているので、既存の word-break 指定を上書きしない。優先させたい場合は `:where()` を外す。
+
+### DO / DON'T
+
+- **DO**: プレゼン / LP / 記事 / メニュー / 案内など日本語文が長めの領域に標準で入れる
+- **DO**: SELECTORS はプロジェクトごとに絞り込む（表全部 vs 見出しだけ 等）
+- **DON'T**: `code`, `pre`, `.mono` などモノスペース領域には適用しない
+- **DON'T**: 短いラベル・ボタン・数値バッジには不要（`<wbr>` を入れても意味がない）
+- **DON'T**: BudouX が挿入する `<wbr>` は文中に見えないが、コピペ時にブラウザによって空白として扱われることがある点は留意（実運用上ほぼ問題なし）
+
+### なぜ BudouX か
+
+- CSS `word-break: auto-phrase`（CSS Text 4）が同等効果を狙うが 2026-07 時点で Chrome のみ対応。**BudouX は JS ライブラリなので全ブラウザで動く**
+- CDN（esm.sh）経由で読み込むだけなのでビルド追加なし
+- LSTM ベースの日本語構文解析器。専門用語や新語にもある程度対応する
+- 公式：https://github.com/google/budoux
+
+
+## アイコン・ピクトグラム — Phosphor Icons（workspace 標準）
+
+**アイコン・ピクトグラムは [Phosphor Icons](https://phosphoricons.com/) を単一リファレンス正本とする。**
+
+要点:
+- 既定ウェイトは **regular**。強調 / 小サイズ (<20px) は **bold**。1 プロジェクトに 1 ウェイトが基本
+- サイズは **8 の倍数**（16 / 20 / 24 / 32 / 48 / 64 / 96）
+- 色は `currentColor` を使って CSS 側の `color` に委任（SVG の `fill` 直書き禁止）
+- Phosphor viewBox は `0 0 256 256`。コピペ時は `fill="currentColor"` を忘れずに
+- 単一 HTML（スライド / 見積もり / 1 枚レポート）は**インライン SVG**、Next.js アプリは `@phosphor-icons/react`、大量使用 Web は CDN webfont `https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.2/src/regular/style.css`
+
+### DO / DON'T
+
+**DO**
+- 迷ったら phosphoricons.com で検索して SVG コピー
+- 1 プロジェクト 1 ウェイト（regular または bold のどちらか）に統一
+- サイズ・色・ホバー状態は CSS で制御
+
+**DON'T**
+- 自作 SVG で場当たり的にアイコンを描く
+- Material Icons / Feather / Heroicons / Lucide 等を同一プロジェクトに混ぜる
+- `fill="#RRGGBB"` を SVG に直書きしてホバー / ダークモードで色変えられなくする
+- 意味の無いアイコン装飾を足す（instyle 抑制ルール）

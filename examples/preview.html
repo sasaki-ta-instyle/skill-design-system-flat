@@ -11,7 +11,12 @@
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="ig_ogp_2026-100.jpg">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gen-interface-jp@0.1.2/all.css">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gen-interface-jp@0.5.0/all.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Shippori Mincho はオプトイン例の表示用に preview.html だけは読み込んでいる（プロダクション側は不要時に外す） -->
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Shippori+Mincho:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
       --color-bg:          #FFFFFF;
@@ -46,6 +51,8 @@
 
       --font-sans:    'Gen Interface JP', sans-serif;
       --font-display: 'Gen Interface JP Display', 'Gen Interface JP', sans-serif;
+      --font-serif:   'Shippori Mincho', serif;  /* オプトイン参考表示用 */
+      --font-mono:    'JetBrains Mono', 'Menlo', monospace;
       --transition-fast:   150ms cubic-bezier(0.4, 0, 0.2, 1);
       --transition-normal: 250ms cubic-bezier(0.4, 0, 0.2, 1);
     }
@@ -60,8 +67,6 @@
       line-height: 1.7;
       -webkit-font-smoothing: antialiased;
     }
-
-    h1, h2, h3, h4 { font-family: var(--font-display); }
 
     /* Layout */
     .page-header {
@@ -459,7 +464,7 @@
 
   <!-- TYPOGRAPHY -->
   <section class="section" id="typography">
-    <p class="section-title">Typography — Gen Interface JP (Display) / Modular Scale 1.25</p>
+    <p class="section-title">Typography — Gen Interface JP / Modular Scale 1.25</p>
     <p style="font-size:0.8125rem; color:var(--color-text-muted); margin-bottom:24px;">モジュラースケール Major Third 1.25 / base 14px: 9 / 11 / 14 / 18 / 22 / 27 / 34 / 43 px</p>
 
     <div class="type-row">
@@ -497,6 +502,10 @@
     <div class="type-row">
       <span class="type-label">Mark<br><span style="color:var(--color-accent); font-weight:700;">本文内</span><br><span style="color:var(--color-text-muted); font-weight:400;">蛍光ペン</span></span>
       <span class="type-body">本文の中で <mark>立たせたい語句</mark> をポイント的にマーキングする用途のみ。CTA や面要素には使わない。</span>
+    </div>
+    <div class="type-row">
+      <span class="type-label">Serif<br><span style="color:var(--color-accent); font-weight:700;">11px</span><br><span style="color:var(--color-text-muted); font-weight:400;">明示指示時のみ</span></span>
+      <span style="font-family: var(--font-serif); font-size:0.6875rem; font-weight:700;">明朝体オプション — Shippori Mincho（既定では使用しない）</span>
     </div>
   </section>
 

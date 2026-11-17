@@ -38,6 +38,11 @@ A `box-shadow: 0 2px 8px rgba(0,0,0,.08)` is a flat-system smell — delete it.
 - `--font-sans: 'Gen Interface JP', sans-serif` for body text and
   `--font-display: 'Gen Interface JP Display', 'Gen Interface JP', sans-serif`
   for headings (h1–h4). Gen Interface JP handles both Latin and Japanese.
+- Available weights via `all.css`: 100 / 200 / 300 / 400 / 500 / 600 / 700 / 800
+  (Thin → ExtraBold) for both `Gen Interface JP` and `Gen Interface JP Display`.
+  Use any `font-weight` in that range without extra setup. We default to
+  `all.css` (one request, all 16 styles) for ergonomics — switch to per-weight
+  CSS files (see official README) when you need to optimize payload size.
 - Modular type scale **Major Third (1.25) on a 14px base** (Display 43 /
   H1 34 / H2 27 / H3 22 / H4 18 / Body 14 / Small 11 / Caption 9).
 - Min font-size 11px. Caption 9px is for chart axis labels only.
@@ -84,9 +89,9 @@ washes. 2–3 uses per page maximum.
 | `rules/snippets.css`        | Component snippets (card, panel, btn, input, type scale). |
 | `rules/design.md`           | Full spec. Read this when the quick rules are not enough. |
 | `rules/claude-md-template.md` | Template for the project's own `CLAUDE.md`. |
-| `assets/ig_logo_2026.svg`   | instyle.group logo (use at height ~14px in headers). |
-| `assets/ig_favicon_2026.png`| Favicon. |
-| `assets/ig_ogp_2026-100.jpg`| OGP image (1200×630). |
+| `assets/ig_logo_2026.svg`   | Reference copy of the logo. **Do not bundle into production projects** — use the canonical `/_shared/static/logo.svg` URL (see step 5). |
+| `assets/ig_favicon_2026.png`| Reference copy of the favicon. **Do not bundle** — use canonical `/_shared/static/favicon.png` URL. |
+| `assets/ig_ogp_2026-100.jpg`| Reference copy of the OGP image (1200×630). **Do not bundle** — use canonical `/_shared/static/ogp.jpg` URL. |
 | `examples/preview.html`     | Reference implementation. Open in a browser to see the target. |
 
 ---
@@ -100,12 +105,23 @@ washes. 2–3 uses per page maximum.
 3. Set the page background to `--color-bg` (white) and use cards with
    `--color-surface` to lift content off it.
 4. Load the font in `<head>` (Gen Interface JP ships body + Display in
-   one stylesheet):
+   one stylesheet, 8 weights 100–800):
    ```html
-   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gen-interface-jp@0.1.2/all.css">
+   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gen-interface-jp@0.5.0/all.css">
    ```
-5. Drop in the brand favicon/logo from `assets/` if the project carries the
-   instyle.group identity.
+5. **Reference brand favicon / OGP / logo via the canonical URL — do NOT
+   copy from `assets/`.** The `assets/ig_*` files in this skill are for
+   offline preview only. In production, point to the shared subdomain:
+
+   - favicon: `https://<CATEGORY>.instyle.group/_shared/static/favicon.png`
+   - logo:    `https://<CATEGORY>.instyle.group/_shared/static/logo.svg`
+   - OGP:     `https://<CATEGORY>.instyle.group/_shared/static/ogp.jpg` (1200×630)
+
+   `<CATEGORY>` is one of `app` / `cpc` / `crhr`. Bundling the files into
+   each project means they go stale when the brand updates them. The
+   canonical URL is the single source of truth.
+   Spec: `~/Workspace/docs/conoha-shared-assets.md`.
 
 ---
 
